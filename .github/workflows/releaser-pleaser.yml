@@ -16,10 +16,8 @@ concurrency:
 jobs:
   releaser-pleaser:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - name: releaser-pleaser
         uses: apricote/releaser-pleaser@v0.7.0
-
+        with:
+          token: ${{ secrets.RELEASER_PLEASER_TOKEN }}
