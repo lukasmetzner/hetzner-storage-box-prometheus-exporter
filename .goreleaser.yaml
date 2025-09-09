@@ -27,7 +27,8 @@ kos:
   - id: hetzner-storage-box-prometheus-exporter
     main: .
     base_image: alpine
-    repository: ghcr.io/lukasmetzner/hetzner-storage-box-prometheus-exporter
+    repositories: 
+      - ghcr.io/lukasmetzner/hetzner-storage-box-prometheus-exporter
     platforms:
       - linux/amd64
       - linux/arm64
