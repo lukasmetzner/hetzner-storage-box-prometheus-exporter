@@ -46,7 +46,7 @@ var (
 	}, []string{"storage-box"})
 )
 
-func recordMetrics(ctx context.Context, client *hcloud.Client) error {
+func scrapeMetrics(ctx context.Context, client *hcloud.Client) error {
 	storageBoxes, err := client.StorageBox.All(ctx)
 	if err != nil {
 		return fmt.Errorf("error fetching storage boxes: %w", err)
@@ -88,7 +88,7 @@ func run() error {
 	go func() {
 		ctx := context.Background()
 		for {
-			if err := recordMetrics(ctx, client); err != nil {
+			if err := scrapeMetrics(ctx, client); err != nil {
 				fmt.Printf("%v\n", err)
 				break
 			}
