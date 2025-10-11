@@ -49,8 +49,7 @@ var (
 func recordMetrics(ctx context.Context, client *hcloud.Client) error {
 	storageBoxes, err := client.StorageBox.All(ctx)
 	if err != nil {
-		fmt.Printf("error fetching storage boxes: %v\n", err)
-		return err
+		return fmt.Errorf("error fetching storage boxes: %w", err)
 	}
 
 	for _, sbx := range storageBoxes {
