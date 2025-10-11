@@ -6,7 +6,6 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/hetznercloud/hcloud-go/v2/hcloud"
@@ -15,19 +14,31 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+var StorageBoxStatusList = []hcloud.StorageBoxStatus{
+	hcloud.StorageBoxStatusInitializing,
+	hcloud.StorageBoxStatusActive,
+	hcloud.StorageBoxStatusLocked,
+}
+
 var (
-	logger *slog.Logger
+	status = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Namespace: "storage_box",
+		Subsystem: "status",
+		Name:      "status",
+	}, []string{"storage-box", "status"})
 
 	size = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "storage_box",
 		Subsystem: "stats",
 		Name:      "size",
 	}, []string{"storage-box"})
+
 	sizeData = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "storage_box",
 		Subsystem: "stats",
 		Name:      "size_data",
 	}, []string{"storage-box"})
+
 	sizeSnapshots = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "storage_box",
 		Subsystem: "stats",
@@ -35,47 +46,55 @@ var (
 	}, []string{"storage-box"})
 )
 
-func recordMetrics(client *hcloud.Client) {
-	go func() {
-		ctx := context.Background()
-		for {
-			storageBoxes, err := client.StorageBox.All(ctx)
-			if err != nil {
-				fmt.Printf("error fetching storage boxes: %v\n", err)
-				break
-			}
+func recordMetrics(ctx context.Context, client *hcloud.Client) error {
+	storageBoxes, err := client.StorageBox.All(ctx)
+	if err != nil {
+		fmt.Printf("error fetching storage boxes: %v\n", err)
+		return err
+	}
 
-			for _, sbx := range storageBoxes {
-				logger.Info("adding metrics", "storage-box-name", sbx.Name)
-				size.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.Size))
-				sizeData.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeData))
-				sizeSnapshots.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeSnapshots))
-			}
+	for _, sbx := range storageBoxes {
+		slog.Info("adding metrics", "storage-box-name", sbx.Name)
 
-			time.Sleep(10 * time.Second)
+		for _, _status := range StorageBoxStatusList {
+			if sbx.Status == _status {
+				status.WithLabelValues(sbx.Name, string(_status)).Set(1.0)
+			} else {
+				status.WithLabelValues(sbx.Name, string(_status)).Set(0.0)
+			}
 		}
-	}()
+
+		size.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.Size))
+		sizeData.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeData))
+		sizeSnapshots.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeSnapshots))
+	}
+
+	return nil
 }
 
 func run() error {
-	logger = slog.New(slog.NewTextHandler(os.Stdout, nil))
+	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stdout, nil)))
 
-	token, ok := os.LookupEnv("HCLOUD_TOKEN")
-	if !ok {
-		return fmt.Errorf("HCLOUD_TOKEN not set")
+	config, err := NewConfig()
+	if err != nil {
+		return err
 	}
 
 	opts := []hcloud.ClientOption{
-		hcloud.WithToken(token),
-	}
-
-	if debug, err := strconv.ParseBool(os.Getenv("HCLOUD_DEBUG")); err == nil && debug {
-		opts = append(opts, hcloud.WithDebugWriter(os.Stderr))
+		hcloud.WithToken(config.APIToken),
 	}
 
 	client := hcloud.NewClient(opts...)
 
-	recordMetrics(client)
+	go func() {
+		ctx := context.Background()
+		for {
+			if err := recordMetrics(ctx, client); err != nil {
+				break
+			}
+			time.Sleep(config.RefreshInterval)
+		}
+	}()
 
 	http.Handle("/metrics", promhttp.Handler())
 
