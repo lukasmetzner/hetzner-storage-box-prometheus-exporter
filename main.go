@@ -89,6 +89,7 @@ func run() error {
 		ctx := context.Background()
 		for {
 			if err := recordMetrics(ctx, client); err != nil {
+				fmt.Printf("%v\n", err)
 				break
 			}
 			time.Sleep(config.ScrapeInterval)
