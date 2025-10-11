@@ -11,8 +11,8 @@ import (
 // This is complete overkill, but fun to explore
 
 type Config struct {
-	ScrapeInterval  time.Duration `env:"SCRAPE_INTERVAL" default:"10s"`
-	APIToken string        `env:"HCLOUD_TOKEN"`
+	ScrapeInterval time.Duration `env:"SCRAPE_INTERVAL" default:"10s"`
+	APIToken       string        `env:"HCLOUD_TOKEN"`
 }
 
 func NewConfig() (*Config, error) {
