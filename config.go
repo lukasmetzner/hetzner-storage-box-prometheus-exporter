@@ -1,18 +1,18 @@
 package main
 
 import (
-	"reflect"
-	"os"
-	"time"
 	"fmt"
+	"os"
+	"reflect"
+	"time"
 )
 
 // Disclaimer:
 // This is complete overkill, but fun to explore
 
 type Config struct {
-	RefreshInterval time.Duration `env:"REFRESH_INTERVAL" default:"10s"`
-	APIToken        string        `env:"HCLOUD_TOKEN"`
+	ScrapeInterval  time.Duration `env:"SCRAPE_INTERVAL" default:"10s"`
+	APIToken string        `env:"HCLOUD_TOKEN"`
 }
 
 func NewConfig() (*Config, error) {

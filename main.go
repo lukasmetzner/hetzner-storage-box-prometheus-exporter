@@ -92,7 +92,7 @@ func run() error {
 			if err := recordMetrics(ctx, client); err != nil {
 				break
 			}
-			time.Sleep(config.RefreshInterval)
+			time.Sleep(config.ScrapeInterval)
 		}
 	}()
 
