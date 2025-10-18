@@ -2,6 +2,19 @@
 
 This exporter collects statistics from all **Storage Boxes** in your **Hetzner Cloud project** and exposes them as Prometheus metrics.
 
+## Docker Compose
+
+```yaml
+services:
+  storage-box-exporter:
+    image: ghcr.io/lukasmetzner/hetzner-storage-box-prometheus-exporter:v0.3.1 # x-releaser-pleaser-version
+    ports:
+      - 2112:2112
+    environment:
+      HCLOUD_TOKEN: $HCLOUD_TOKEN
+      SCRAPE_INTERVAL: "10s"
+```
+
 * Metrics are available at: `http://<host>:2112/metrics`
 * Requires a valid [Hetzner Cloud API token](https://docs.hetzner.cloud/reference/cloud), set via the `HCLOUD_TOKEN` environment variable
 * Configure the scrape interval at the Hetzner API with the environment variable `SCRAPE_INTERVAL`

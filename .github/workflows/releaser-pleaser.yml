@@ -21,3 +21,5 @@ jobs:
         uses: apricote/releaser-pleaser@v0.7.0
         with:
           token: ${{ secrets.RELEASER_PLEASER_TOKEN }}
+          extra-files: |
+            README.md
