@@ -2,10 +2,8 @@ module github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter
 
 go 1.25.1
 
-replace github.com/hetznercloud/hcloud-go/v2 => github.com/hetznercloud/hcloud-go/v2 v2.27.1-0.20251017131039-be9038ea945f
-
 require (
-	github.com/hetznercloud/hcloud-go/v2 v2.22.0
+	github.com/hetznercloud/hcloud-go/v2 v2.28.0
 	github.com/prometheus/client_golang v1.23.2
 )
 
