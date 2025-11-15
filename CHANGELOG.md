@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.3.2](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.3.2)
+
+### Bug Fixes
+
+- exit on API errors
+
 ## [v0.3.1](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.3.1)
 
 ### Bug Fixes
