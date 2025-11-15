@@ -90,7 +90,7 @@ func run() error {
 		for {
 			if err := scrapeMetrics(ctx, client); err != nil {
 				fmt.Printf("%v\n", err)
-				break
+				os.Exit(1)
 			}
 			time.Sleep(config.ScrapeInterval)
 		}
