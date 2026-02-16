@@ -1,5 +1,18 @@
 # Changelog
 
+## [v0.4.0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.4.0)
+
+### Features
+
+- increase default interval to 30m
+- stability improvements
+- add /healthz and /readyz endpoints for container probes
+
+### Bug Fixes
+
+- log error without exiting
+- reset gauge vectors before each scrape to prune stale metrics
+
 ## [v0.3.2](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.3.2)
 
 ### Bug Fixes
