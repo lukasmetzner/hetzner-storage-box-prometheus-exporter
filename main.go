@@ -55,6 +55,11 @@ func scrapeMetrics(ctx context.Context, client *hcloud.Client) error {
 		return fmt.Errorf("error fetching storage boxes: %w", err)
 	}
 
+	status.Reset()
+	size.Reset()
+	sizeData.Reset()
+	sizeSnapshots.Reset()
+
 	for _, sbx := range storageBoxes {
 		slog.Info("adding metrics", "storage-box-name", sbx.Name)
 
