@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -98,6 +99,8 @@ func run() error {
 
 	client := hcloud.NewClient(opts...)
 
+	var ready atomic.Bool
+
 	go func() {
 		for {
 			scrapeCtx, scrapeCancel := context.WithTimeout(ctx, scrapeTimeout)
@@ -105,6 +108,7 @@ func run() error {
 				slog.Error("scrape failed", "error", err)
 			}
 			scrapeCancel()
+			ready.Store(true)
 
 			select {
 			case <-ctx.Done():
@@ -117,6 +121,19 @@ func run() error {
 
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = fmt.Fprintln(w, "ok")
+	})
+	mux.HandleFunc("/readyz", func(w http.ResponseWriter, r *http.Request) {
+		if ready.Load() {
+			w.WriteHeader(http.StatusOK)
+			_, _ = fmt.Fprintln(w, "ok")
+			return
+		}
+		w.WriteHeader(http.StatusServiceUnavailable)
+		_, _ = fmt.Fprintln(w, "not ready")
+	})
 
 	server := &http.Server{
 		Addr:         ":2112",
