@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/hetznercloud/hcloud-go/v2/hcloud"
@@ -71,8 +74,13 @@ func scrapeMetrics(ctx context.Context, client *hcloud.Client) error {
 	return nil
 }
 
+const scrapeTimeout = 30 * time.Second
+
 func run() error {
 	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stdout, nil)))
+
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
 
 	config, err := NewConfig()
 	if err != nil {
@@ -86,18 +94,48 @@ func run() error {
 	client := hcloud.NewClient(opts...)
 
 	go func() {
-		ctx := context.Background()
 		for {
-			if err := scrapeMetrics(ctx, client); err != nil {
+			scrapeCtx, scrapeCancel := context.WithTimeout(ctx, scrapeTimeout)
+			if err := scrapeMetrics(scrapeCtx, client); err != nil {
 				slog.Error("scrape failed", "error", err)
 			}
-			time.Sleep(config.ScrapeInterval)
+			scrapeCancel()
+
+			select {
+			case <-ctx.Done():
+				slog.Info("stopping scrape loop")
+				return
+			case <-time.After(config.ScrapeInterval):
+			}
 		}
 	}()
 
-	http.Handle("/metrics", promhttp.Handler())
+	mux := http.NewServeMux()
+	mux.Handle("/metrics", promhttp.Handler())
 
-	return http.ListenAndServe(":2112", nil)
+	server := &http.Server{
+		Addr:         ":2112",
+		Handler:      mux,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
+
+	go func() {
+		<-ctx.Done()
+		slog.Info("shutting down HTTP server")
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := server.Shutdown(shutdownCtx); err != nil {
+			slog.Error("HTTP server shutdown error", "error", err)
+		}
+	}()
+
+	slog.Info("starting HTTP server", "addr", server.Addr)
+	if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+	return nil
 }
 
 func main() {
