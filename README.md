@@ -7,7 +7,7 @@ This exporter collects statistics from all **Storage Boxes** in your **Hetzner C
 ```yaml
 services:
   storage-box-exporter:
-    image: ghcr.io/lukasmetzner/hetzner-storage-box-prometheus-exporter:v0.4.0 # x-releaser-pleaser-version
+    image: ghcr.io/lukasmetzner/hetzner-storage-box-prometheus-exporter:v0.5.0 # x-releaser-pleaser-version
     ports:
       - 2112:2112
     environment:
