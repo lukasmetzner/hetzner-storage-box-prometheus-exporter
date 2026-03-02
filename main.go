@@ -102,7 +102,7 @@ func run() error {
 	}
 
 	opts := []hcloud.ClientOption{
-		hcloud.WithToken(config.APIToken),
+		hcloud.WithToken(config.Token),
 	}
 
 	client := hcloud.NewClient(opts...)

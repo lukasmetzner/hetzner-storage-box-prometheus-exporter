@@ -11,12 +11,12 @@ services:
     ports:
       - 2112:2112
     environment:
-      HCLOUD_TOKEN: $HCLOUD_TOKEN
+      HETZNER_TOKEN: $HETZNER_TOKEN
       SCRAPE_INTERVAL: "30m"
 ```
 
 * Metrics are available at: `http://<host>:2112/metrics`
-* Requires a valid [Hetzner Cloud API token](https://docs.hetzner.cloud/reference/cloud), set via the `HCLOUD_TOKEN` environment variable
+* Requires a valid [Hetzner Cloud API token](https://docs.hetzner.cloud/reference/cloud), set via the `HETZNER_TOKEN` environment variable
 * Configure the scrape interval at the Hetzner API with the environment variable `SCRAPE_INTERVAL`
     * Accepts values, which can be parsed by Go's [`time.ParseDuration()`](https://pkg.go.dev/time#ParseDuration)
     * Examples: `10s`, `5m`, `2h45m`
