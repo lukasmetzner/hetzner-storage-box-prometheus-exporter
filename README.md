@@ -17,7 +17,7 @@ This exporter collects statistics from all **Storage Boxes** in your **Hetzner C
 ```yaml
 services:
   storage-box-exporter:
-    image: ghcr.io/lukasmetzner/hetzner-storage-box-prometheus-exporter:v0.8.0 # x-releaser-pleaser-version
+    image: ghcr.io/lukasmetzner/hetzner-storage-box-prometheus-exporter:v0.9.0 # x-releaser-pleaser-version
     ports:
       - 2112:2112
     environment:
@@ -47,7 +47,7 @@ kubectl create secret generic hetzner --from-literal=token=<YOUR_HETZNER_TOKEN>
 ### Install
 
 ```bash
-helm install storage-box-exporter oci://ghcr.io/lukasmetzner/charts/hetzner-storage-box-prometheus-exporter --version 0.8.0 # x-releaser-pleaser-version
+helm install storage-box-exporter oci://ghcr.io/lukasmetzner/charts/hetzner-storage-box-prometheus-exporter --version 0.9.0 # x-releaser-pleaser-version
 ```
 
 ### Values
