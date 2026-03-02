@@ -31,22 +31,22 @@ var (
 		Name:      "status",
 	}, []string{"storage-box", "status"})
 
-	size = promauto.NewGaugeVec(prometheus.GaugeOpts{
+	allocated = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "storage_box",
 		Subsystem: "stats",
-		Name:      "size",
+		Name:      "allocated",
 	}, []string{"storage-box"})
 
-	sizeData = promauto.NewGaugeVec(prometheus.GaugeOpts{
+	allocatedData = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "storage_box",
 		Subsystem: "stats",
-		Name:      "size_data",
+		Name:      "allocated_data",
 	}, []string{"storage-box"})
 
-	sizeSnapshots = promauto.NewGaugeVec(prometheus.GaugeOpts{
+	allocatedSnapshots = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "storage_box",
 		Subsystem: "stats",
-		Name:      "size_snapshots",
+		Name:      "allocated_snapshots",
 	}, []string{"storage-box"})
 
 	capacity = promauto.NewGaugeVec(prometheus.GaugeOpts{
@@ -63,9 +63,9 @@ func scrapeMetrics(ctx context.Context, client *hcloud.Client) error {
 	}
 
 	status.Reset()
-	size.Reset()
-	sizeData.Reset()
-	sizeSnapshots.Reset()
+	allocated.Reset()
+	allocatedData.Reset()
+	allocatedSnapshots.Reset()
 	capacity.Reset()
 
 	for _, sbx := range storageBoxes {
@@ -79,9 +79,9 @@ func scrapeMetrics(ctx context.Context, client *hcloud.Client) error {
 			}
 		}
 
-		size.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.Size))
-		sizeData.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeData))
-		sizeSnapshots.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeSnapshots))
+		allocated.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.Size))
+		allocatedData.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeData))
+		allocatedSnapshots.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeSnapshots))
 		capacity.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.StorageBoxType.Size))
 	}
 
