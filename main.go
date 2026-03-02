@@ -49,10 +49,10 @@ var (
 		Name:      "size_snapshots",
 	}, []string{"storage-box"})
 
-	capacity = promauto.NewGaugeVec(prometheus.GaugeOpts{
+	typeSize = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "storage_box",
-		Subsystem: "stats",
-		Name:      "capacity",
+		Subsystem: "type",
+		Name:      "size",
 	}, []string{"storage-box"})
 )
 
@@ -66,7 +66,7 @@ func scrapeMetrics(ctx context.Context, client *hcloud.Client) error {
 	size.Reset()
 	sizeData.Reset()
 	sizeSnapshots.Reset()
-	capacity.Reset()
+	typeSize.Reset()
 
 	for _, sbx := range storageBoxes {
 		slog.Info("adding metrics", "storage-box-name", sbx.Name)
@@ -82,7 +82,7 @@ func scrapeMetrics(ctx context.Context, client *hcloud.Client) error {
 		size.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.Size))
 		sizeData.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeData))
 		sizeSnapshots.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.Stats.SizeSnapshots))
-		capacity.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.StorageBoxType.Size))
+		typeSize.With(prometheus.Labels{"storage-box": sbx.Name}).Set(float64(sbx.StorageBoxType.Size))
 	}
 
 	return nil
