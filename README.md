@@ -57,4 +57,5 @@ helm install storage-box-exporter oci://ghcr.io/lukasmetzner/charts/hetzner-stor
 | `serviceMonitor.scrapeTimeout` | Prometheus scrape timeout | `"30s"` |
 | `serviceMonitor.additionalLabels` | Extra labels on the ServiceMonitor | `{}` |
 
-> **Note:** `serviceMonitor.enabled: true` requires the [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) CRDs to be installed in your cluster.
+> [!NOTE]
+> `serviceMonitor.enabled: true` requires the [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) CRDs to be installed in your cluster.
