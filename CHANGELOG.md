@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.9.0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.9.0)
+
+### Features
+
+- drop subsystem name in Storage Box status
+
 ## [v0.8.0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.8.0)
 
 ### Features
