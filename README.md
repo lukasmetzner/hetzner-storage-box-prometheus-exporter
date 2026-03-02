@@ -2,6 +2,16 @@
 
 This exporter collects statistics from all **Storage Boxes** in your **Hetzner Cloud project** and exposes them as Prometheus metrics.
 
+## Exported Metrics
+
+| Metric | Description | Labels |
+|--------|-------------|--------|
+| `storage_box_status` | Storage box status (1 = current, 0 = not). Possible status values: `initializing`, `active`, `locked`. | `storage-box`, `status` |
+| `storage_box_stats_size` | Total size of the storage box (bytes used) | `storage-box` |
+| `storage_box_stats_size_data` | Size of data in the storage box (bytes used) | `storage-box` |
+| `storage_box_stats_size_snapshots` | Size of snapshots in the storage box (bytes used) | `storage-box` |
+| `storage_box_type_size` | Total capacity of the storage box type (bytes used) | `storage-box` |
+
 ## Docker Compose
 
 ```yaml

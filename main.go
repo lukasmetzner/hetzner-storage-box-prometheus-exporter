@@ -27,7 +27,6 @@ var StorageBoxStatusList = []hcloud.StorageBoxStatus{
 var (
 	status = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: "storage_box",
-		Subsystem: "status",
 		Name:      "status",
 	}, []string{"storage-box", "status"})
 
