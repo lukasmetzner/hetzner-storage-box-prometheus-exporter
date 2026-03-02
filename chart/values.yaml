@@ -1,0 +1,33 @@
+image:
+  repository: ghcr.io/lukasmetzner/hetzner-storage-box-prometheus-exporter
+  # -- Overrides the image tag. Defaults to the chart appVersion.
+  tag: ""
+  pullPolicy: IfNotPresent
+
+secret:
+  # -- Name of an existing Kubernetes Secret containing the Hetzner Cloud API token.
+  name: "hetzner"
+  # -- Key inside the Secret that holds the token value.
+  key: "token"
+
+# -- Scrape interval for querying the Hetzner API.
+# Accepts any value parseable by Go's time.ParseDuration().
+scrapeInterval: "30m"
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 50m
+  #   memory: 64Mi
+
+serviceMonitor:
+  # -- Deploy a ServiceMonitor resource for kube-prometheus-stack.
+  enabled: false
+  # -- Prometheus scrape interval.
+  interval: "1m"
+  # -- Prometheus scrape timeout.
+  scrapeTimeout: "30s"
+  # -- Additional labels to add to the ServiceMonitor (e.g. release: kube-prometheus-stack).
+  additionalLabels: {}
