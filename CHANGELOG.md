@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.7.0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.7.0)
+
+### Features
+
+- rename HCLOUD_TOKEN to HETZNER_TOKEN
+
 ## [v0.6.0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.6.0)
 
 ### Features
