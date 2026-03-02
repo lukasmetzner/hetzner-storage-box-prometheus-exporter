@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.8.0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.8.0)
+
+### Features
+
+- add Helm chart
+
 ## [v0.7.0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.7.0)
 
 ### Features
