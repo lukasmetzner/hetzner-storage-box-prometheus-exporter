@@ -1,5 +1,18 @@
 # Changelog
 
+## [v0.9.1](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.9.1)
+
+### Bug Fixes
+
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.37.0 (#25)
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.38.0 (#28)
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.39.0 (#29)
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.40.0 (#30)
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.41.1 (#31)
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.41.2 (#32)
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.43.0 (#33)
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.44.0 (#34)
+
 ## [v0.9.0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.9.0)
 
 ### Features
