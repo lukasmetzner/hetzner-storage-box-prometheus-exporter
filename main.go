@@ -93,6 +93,27 @@ func scrapeMetrics(ctx context.Context, client *hcloud.Client) error {
 
 const scrapeTimeout = 30 * time.Second
 
+// newMux builds the HTTP routes of the exporter. The readyz endpoint reports
+// ready once ready has been flipped by the scrape loop.
+func newMux(ready *atomic.Bool) *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.Handle("/metrics", promhttp.Handler())
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = fmt.Fprintln(w, "ok")
+	})
+	mux.HandleFunc("/readyz", func(w http.ResponseWriter, r *http.Request) {
+		if ready.Load() {
+			w.WriteHeader(http.StatusOK)
+			_, _ = fmt.Fprintln(w, "ok")
+			return
+		}
+		w.WriteHeader(http.StatusServiceUnavailable)
+		_, _ = fmt.Fprintln(w, "not ready")
+	})
+	return mux
+}
+
 func run() error {
 	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stdout, nil)))
 
@@ -131,25 +152,9 @@ func run() error {
 		}
 	}()
 
-	mux := http.NewServeMux()
-	mux.Handle("/metrics", promhttp.Handler())
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = fmt.Fprintln(w, "ok")
-	})
-	mux.HandleFunc("/readyz", func(w http.ResponseWriter, r *http.Request) {
-		if ready.Load() {
-			w.WriteHeader(http.StatusOK)
-			_, _ = fmt.Fprintln(w, "ok")
-			return
-		}
-		w.WriteHeader(http.StatusServiceUnavailable)
-		_, _ = fmt.Fprintln(w, "not ready")
-	})
-
 	server := &http.Server{
 		Addr:         ":2112",
-		Handler:      mux,
+		Handler:      newMux(&ready),
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  60 * time.Second,
