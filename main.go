@@ -16,7 +16,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+
+	"github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/internal/version"
 )
+
+const appName = "hetzner-storage-box-prometheus-exporter"
 
 var StorageBoxStatusList = []hcloud.StorageBoxStatus{
 	hcloud.StorageBoxStatusInitializing,
@@ -102,6 +106,7 @@ func run() error {
 
 	opts := []hcloud.ClientOption{
 		hcloud.WithToken(config.Token),
+		hcloud.WithApplication(appName, version.Version),
 	}
 
 	client := hcloud.NewClient(opts...)
