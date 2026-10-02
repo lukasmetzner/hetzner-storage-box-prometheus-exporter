@@ -10,6 +10,8 @@ github.com/hetznercloud/hcloud-go/v2 v2.47.0 h1:SI7C4cvdYReb2aHUEQ8KBMOqxNnmd4hO
 github.com/hetznercloud/hcloud-go/v2 v2.47.0/go.mod h1:pdG7fFGlYsCAaJ9r0QOIF0O6wQcpbJxT2VT8aP6XlIc=
 github.com/hetznercloud/hcloud-go/v2 v2.49.0 h1:QXONxfgXIF99PFJknkVw+LrQQB4PB5IbEjEDh4Hfmig=
 github.com/hetznercloud/hcloud-go/v2 v2.49.0/go.mod h1:J9QH6j8pRH0K3+HlqgOlQ8abXagWTD/GpTkfra2et+g=
+github.com/hetznercloud/hcloud-go/v2 v2.50.0 h1:ECWYFFGTU0/ftWjTBDPDtqpqxEbCAJYG9KHWpHPUoDo=
+github.com/hetznercloud/hcloud-go/v2 v2.50.0/go.mod h1:J9QH6j8pRH0K3+HlqgOlQ8abXagWTD/GpTkfra2et+g=
 github.com/klauspost/compress v1.19.1 h1:VsB4HPswih7mmZ8WleSFQ75c/Ui1M4trX5oAsJnhSlk=
 github.com/klauspost/compress v1.19.1/go.mod h1:cwPg85FWrGar70rWktvGQj8/hthj3wpl0PGDogxkrSQ=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
