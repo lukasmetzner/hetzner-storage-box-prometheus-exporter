@@ -1,6 +1,6 @@
 module github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter
 
-go 1.25.7
+go 1.27.3
 
 require (
 	github.com/hetznercloud/hcloud-go/v2 v2.51.0

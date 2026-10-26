@@ -30,4 +30,4 @@ repos:
     hooks:
       - id: golangci-lint-full
         args: [--timeout=5m]
-        language_version: 1.25.7
+        language_version: 1.27.3 # renovate: datasource=golang-version depName=go
