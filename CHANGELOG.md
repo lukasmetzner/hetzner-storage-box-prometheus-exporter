@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.10.2](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.10.2)
+
+[Compare to previous version](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/compare/v0.10.1...v0.10.2)
+
+### Bug Fixes
+
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.51.0 (#50) ([f948af4](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/commit/f948af48155aadc5a70ea25cdb6ae7acb4ae009f))
+- **deps**: update module github.com/prometheus/client_golang to v1.25.0 (#53) ([6cd1b08](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/commit/6cd1b0832f3d420cbe7e77ebc62820e3de843913))
+- **deps**: update module github.com/hetznercloud/hcloud-go/v2 to v2.53.0 (#52) ([9e6d9c0](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/commit/9e6d9c0a49c08b88697950bea236acd4d3ee6dcf))
+
 ## [v0.10.1](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/releases/tag/v0.10.1)
 
 [Compare to previous version](https://github.com/lukasmetzner/hetzner-storage-box-prometheus-exporter/compare/v0.10.0...v0.10.1)
